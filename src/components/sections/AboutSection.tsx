@@ -44,7 +44,7 @@ export function AboutSection() {
             <Reveal
               variant="fadeUp"
               delay={0.2}
-              className="mt-4 w-full max-w-[220px] mx-auto bg-card rounded-xl p-6 shadow-elevated sm:mx-0 sm:absolute sm:-bottom-6 sm:-right-6 md:bottom-8 md:-right-8"
+              className="mt-4 w-full max-w-[220px] mx-auto bg-card rounded-xl p-6 shadow-elevated sm:mx-0 sm:absolute sm:top-4 sm:left-4 md:top-6 md:left-6"
             >
               <div className="font-serif text-4xl font-semibold text-gradient-gold">
                 5000+
