@@ -59,7 +59,7 @@ export function ScrollArrows() {
   };
 
   const baseButtonClasses =
-    "h-12 w-12 rounded-full border border-border/60 bg-background/80 text-foreground/80 shadow-lg backdrop-blur transition-all duration-300 ease-out hover:bg-background/90 hover:text-foreground hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40";
+    "flex h-12 w-12 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground/80 shadow-lg backdrop-blur transition-all duration-300 ease-out hover:scale-[1.06] hover:border-gold/40 hover:bg-background hover:text-foreground hover:shadow-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40";
 
   return (
     <div className="fixed bottom-16 right-6 z-50 flex flex-col gap-3 md:bottom-6">
@@ -75,7 +75,7 @@ export function ScrollArrows() {
             : "pointer-events-none opacity-0 translate-y-2 scale-95"
         }`}
       >
-        <ChevronUp className="h-5 w-5" aria-hidden="true" />
+        <ChevronUp className="h-5 w-5" strokeWidth={2.25} aria-hidden="true" />
       </button>
       <button
         type="button"
@@ -89,7 +89,7 @@ export function ScrollArrows() {
             : "pointer-events-none opacity-0 -translate-y-2 scale-95"
         }`}
       >
-        <ChevronDown className="h-5 w-5" aria-hidden="true" />
+        <ChevronDown className="h-5 w-5" strokeWidth={2.25} aria-hidden="true" />
       </button>
     </div>
   );
