@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { Reveal } from "@/components/anim/Reveal";
 
 const reviews = [
   {
@@ -85,13 +86,7 @@ export function ReviewsSection() {
   return (
     <section id="reviews" className="section-padding scroll-mt-header">
       <div className="container-narrow">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        <Reveal variant="fadeUp" className="text-center mb-16">
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
             Отзывы клиентов
           </span>
@@ -102,7 +97,7 @@ export function ReviewsSection() {
             Сотни девушек выбирают Belleza за стабильное качество, эстетику и
             внимательное отношение.
           </p>
-        </motion.div>
+        </Reveal>
 
         <div className="relative max-w-3xl mx-auto">
           <Quote className="absolute -top-6 left-0 h-16 w-16 text-gold/20 -scale-x-100" />

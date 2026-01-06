@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { CalendarCheck, MessageCircle, Sparkles } from "lucide-react";
+import { Reveal } from "@/components/anim/Reveal";
 
 const steps = [
   {
@@ -29,13 +29,7 @@ export function StepsSection() {
   return (
     <section id="steps" className="section-padding scroll-mt-header">
       <div className="container-narrow">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        <Reveal variant="fadeUp" className="text-center mb-16">
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
             Простой процесс
           </span>
@@ -46,19 +40,17 @@ export function StepsSection() {
             Мы сделали запись максимально удобной — всего три шага до вашей
             идеальной процедуры.
           </p>
-        </motion.div>
+        </Reveal>
 
         <div className="relative">
           <div className="hidden md:block absolute top-24 left-[16.67%] right-[16.67%] h-0.5 bg-gradient-to-r from-gold/20 via-gold to-gold/20" />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
             {steps.map((step, index) => (
-              <motion.div
+              <Reveal
                 key={step.number}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
+                variant="fadeUp"
+                delay={index * 0.12}
                 className="relative text-center"
               >
                 <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-card shadow-card mb-6 z-10">
@@ -74,7 +66,7 @@ export function StepsSection() {
                 <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mx-auto">
                   {step.description}
                 </p>
-              </motion.div>
+              </Reveal>
             ))}
           </div>
         </div>

@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { Eye, Hand, Heart, Scissors, Sparkles } from "lucide-react";
+import { Reveal } from "@/components/anim/Reveal";
 
 const services = [
   {
@@ -39,36 +39,11 @@ const services = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
-
 export function ServicesSection() {
   return (
     <section id="services" className="section-padding bg-muted/40 scroll-mt-header">
       <div className="container-narrow">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        <Reveal variant="fadeUp" className="text-center mb-16">
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
             Экспертиза и внимание к деталям
           </span>
@@ -80,19 +55,13 @@ export function ServicesSection() {
             впечатления. Мы создаем ухоженный образ, который подчеркивает вашу
             индивидуальность.
           </p>
-        </motion.div>
+        </Reveal>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => (
-            <motion.div
+            <Reveal
               key={service.title}
-              variants={itemVariants}
+              delay={index * 0.08}
               className={`group relative bg-card rounded-2xl p-8 shadow-soft hover:shadow-card transition-all duration-500 ${
                 index === services.length - 1 && services.length % 3 === 1
                   ? "lg:col-start-2"
@@ -123,9 +92,9 @@ export function ServicesSection() {
               </ul>
 
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-transparent to-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            </motion.div>
+            </Reveal>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

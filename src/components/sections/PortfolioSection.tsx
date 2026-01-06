@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Reveal } from "@/components/anim/Reveal";
 
 const portfolioItems = [
   {
@@ -74,13 +75,7 @@ export function PortfolioSection() {
   return (
     <section id="portfolio" className="section-padding bg-muted/40 scroll-mt-header">
       <div className="container-narrow">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
+        <Reveal variant="fadeUp" className="text-center mb-12">
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
             Портфолио работ
           </span>
@@ -91,13 +86,11 @@ export function PortfolioSection() {
             Эстетика, аккуратность и стойкий результат. Примеры работ, которые
             вдохновляют и задают высокий стандарт качества.
           </p>
-        </motion.div>
+        </Reveal>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+        <Reveal
+          variant="fadeUp"
+          delay={0.1}
           className="flex flex-wrap justify-center gap-3 mb-10"
         >
           {categories.map((category) => (
@@ -113,7 +106,7 @@ export function PortfolioSection() {
               {category}
             </button>
           ))}
-        </motion.div>
+        </Reveal>
 
         <motion.div layout className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           <AnimatePresence mode="popLayout">

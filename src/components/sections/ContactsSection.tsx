@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
 import { Clock, Instagram, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { YandexMap } from "@/components/ui/YandexMap";
 import { YA_MAP_PLACE_URL, YA_MAP_ROUTE_URL } from "@/config/links";
+import { Reveal } from "@/components/anim/Reveal";
 
 const contactInfo = [
   {
@@ -50,13 +50,7 @@ export function ContactsSection() {
   return (
     <section id="contacts" className="section-padding scroll-mt-header">
       <div className="container-narrow">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        <Reveal variant="fadeUp" className="text-center mb-16">
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
             Свяжитесь с нами
           </span>
@@ -67,16 +61,10 @@ export function ContactsSection() {
             Мы всегда на связи: ответим на вопросы, подберем мастера и
             забронируем удобное время.
           </p>
-        </motion.div>
+        </Reveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="space-y-8"
-          >
+          <Reveal variant="slideRight" className="space-y-8">
             {contactInfo.map((item) => (
               <div key={item.title} className="flex gap-5">
                 <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center shrink-0">
@@ -141,15 +129,9 @@ export function ContactsSection() {
                 </Button>
               </a>
             </div>
-          </motion.div>
+          </Reveal>
 
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="relative"
-          >
+          <Reveal variant="slideLeft" className="relative">
             <YandexMap />
             <div className="absolute top-4 left-4 bg-card/95 backdrop-blur-sm rounded-lg p-4 shadow-soft">
               <div className="font-serif text-lg font-medium">Belleza</div>
@@ -175,7 +157,7 @@ export function ContactsSection() {
                 {"\u041f\u043e\u0441\u0442\u0440\u043e\u0438\u0442\u044c \u043c\u0430\u0440\u0448\u0440\u0443\u0442"}
               </a>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

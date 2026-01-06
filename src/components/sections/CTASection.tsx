@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
 import { ArrowRight, Gift } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/anim/Reveal";
 
 export function CTASection() {
   return (
@@ -13,13 +13,7 @@ export function CTASection() {
       <div className="absolute bottom-10 right-10 w-60 h-60 bg-gold/10 rounded-full blur-3xl animate-float" />
 
       <div className="container-narrow relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center"
-        >
+        <Reveal variant="fadeUp" className="max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/20 text-gold mb-8">
             <Gift className="h-4 w-4" />
             <span className="text-sm font-medium">Скидка 15% на первый визит</span>
@@ -52,7 +46,7 @@ export function CTASection() {
               </Button>
             </a>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

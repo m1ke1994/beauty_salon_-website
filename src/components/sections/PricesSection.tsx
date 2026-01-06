@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
 import { Check, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/anim/Reveal";
 
 const priceCategories = [
   {
@@ -56,13 +56,7 @@ export function PricesSection() {
   return (
     <section id="prices" className="section-padding scroll-mt-header">
       <div className="container-narrow">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
+        <Reveal variant="fadeUp" className="text-center mb-16">
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
             Прозрачные и честные цены
           </span>
@@ -73,16 +67,14 @@ export function PricesSection() {
             Все услуги фиксированы по стоимости. Окончательная цена зависит от
             выбранного дизайна и сложности работы.
           </p>
-        </motion.div>
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {priceCategories.map((category, categoryIndex) => (
-            <motion.div
+            <Reveal
               key={category.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
+              variant="fadeUp"
+              delay={categoryIndex * 0.08}
               className="bg-card rounded-2xl p-6 md:p-8 shadow-soft"
             >
               <h3 className="font-serif text-2xl font-medium mb-6 pb-4 border-b border-border">
@@ -122,17 +114,11 @@ export function PricesSection() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-center mt-12"
-        >
+        <Reveal variant="fadeUp" delay={0.2} className="text-center mt-12">
           <div className="inline-flex items-center gap-2 text-muted-foreground mb-6">
             <Check className="h-5 w-5 text-gold" />
             <span>Консультация мастера включена в стоимость</span>
@@ -144,7 +130,7 @@ export function PricesSection() {
               </Button>
             </Link>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

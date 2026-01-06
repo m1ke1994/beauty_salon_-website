@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { Award, Clock, Heart, Shield } from "lucide-react";
+import { Reveal } from "@/components/anim/Reveal";
 
 const features = [
   {
@@ -29,13 +29,7 @@ export function AboutSection() {
     <section id="about" className="section-padding bg-muted/40 scroll-mt-header">
       <div className="container-narrow">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative"
-          >
+          <Reveal variant="slideRight" className="relative">
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden">
               <img
                 src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=1000&fit=crop"
@@ -47,11 +41,9 @@ export function AboutSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-graphite/30 to-transparent" />
             </div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+            <Reveal
+              variant="fadeUp"
+              delay={0.2}
               className="absolute -bottom-6 -right-6 md:bottom-8 md:-right-8 bg-card rounded-xl p-6 shadow-elevated max-w-[200px]"
             >
               <div className="font-serif text-4xl font-semibold text-gradient-gold">
@@ -60,15 +52,10 @@ export function AboutSection() {
               <div className="text-sm text-muted-foreground mt-1">
                 довольных клиентов
               </div>
-            </motion.div>
-          </motion.div>
+            </Reveal>
+          </Reveal>
 
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <Reveal variant="slideLeft">
             <span className="text-sm font-medium text-gold uppercase tracking-widest">
               О нашей студии
             </span>
@@ -88,12 +75,10 @@ export function AboutSection() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {features.map((feature, index) => (
-                <motion.div
+                <Reveal
                   key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  variant="fadeUp"
+                  delay={index * 0.08}
                   className="flex gap-4"
                 >
                   <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center shrink-0">
@@ -105,10 +90,10 @@ export function AboutSection() {
                       {feature.description}
                     </p>
                   </div>
-                </motion.div>
+                </Reveal>
               ))}
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>
