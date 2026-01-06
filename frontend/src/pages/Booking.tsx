@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar, CheckCircle2, Clock, ArrowLeft } from "lucide-react";
@@ -19,32 +19,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { scrollToSection } from "@/lib/scrollToSection";
-
-const services = [
-  { value: "manicure", label: "Маникюр + покрытие гель‑лак" },
-  { value: "pedicure", label: "Педикюр + покрытие гель‑лак" },
-  { value: "lashes-classic", label: "Наращивание ресниц (классика)" },
-  { value: "lashes-2d", label: "Наращивание ресниц (2D)" },
-  { value: "lashes-3d", label: "Наращивание ресниц (3D–5D)" },
-  { value: "brows", label: "Коррекция и окрашивание бровей" },
-  { value: "brows-lamination", label: "Ламинирование бровей" },
-  { value: "lash-lamination", label: "Ламинирование ресниц" },
-  { value: "other", label: "Другая услуга (укажите в комментарии)" },
-];
-
-const timeSlots = [
-  "10:00",
-  "11:00",
-  "12:00",
-  "13:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
-  "18:00",
-  "19:00",
-  "20:00",
-];
+import { usePage } from "@/hooks/useContent";
+import { findSection, sortItems } from "@/lib/content";
 
 const bookingSchema = z.object({
   name: z.string().min(2, "Введите имя"),
@@ -61,6 +37,20 @@ const bookingSchema = z.object({
 type BookingFormData = z.infer<typeof bookingSchema>;
 
 const Booking = () => {
+  const { data: page } = usePage("booking");
+  const bookingHeader = findSection(page, "booking");
+  const formSection = findSection(page, "booking-form");
+  const servicesSection = findSection(page, "booking-services");
+  const timesSection = findSection(page, "booking-times");
+  const successSection = findSection(page, "booking-success");
+
+  const formFields = sortItems(formSection?.items);
+  const services = sortItems(servicesSection?.items);
+  const timeSlots = sortItems(timesSection?.items);
+  const formExtra = formSection?.extra as Record<string, string> | undefined;
+  const headerExtra = bookingHeader?.extra as Record<string, string> | undefined;
+  const successExtra = successSection?.extra as Record<string, string> | undefined;
+
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
@@ -85,7 +75,7 @@ const Booking = () => {
     setIsSubmitted(true);
   };
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = useMemo(() => new Date().toISOString().split("T")[0], []);
 
   useEffect(() => {
     if (location.hash === "#booking") {
@@ -94,6 +84,17 @@ const Booking = () => {
       });
     }
   }, [location.hash]);
+
+  if (!bookingHeader || !formSection) {
+    return null;
+  }
+
+  const nameField = formFields[0];
+  const phoneField = formFields[1];
+  const serviceField = formFields[2];
+  const dateField = formFields[3];
+  const timeField = formFields[4];
+  const commentField = formFields[5];
 
   return (
     <div className="min-h-screen bg-muted/40">
@@ -113,16 +114,15 @@ const Booking = () => {
                   <CheckCircle2 className="h-10 w-10 text-green-600" />
                 </div>
                 <h1 className="font-serif text-4xl font-medium mb-4">
-                  Запись подтверждена!
+                  {successSection?.title ?? "Запись подтверждена!"}
                 </h1>
                 <p className="text-muted-foreground text-lg mb-8">
-                  Мы получили вашу заявку. В ближайшее время администратор свяжется
-                  с вами для уточнения деталей.
+                  {successSection?.description ?? ""}
                 </p>
-                <Link to="/">
+                <Link to={successExtra?.cta_url ?? "/"}>
                   <Button variant="gold" size="lg" className="gap-2">
                     <ArrowLeft className="h-4 w-4" />
-                    На главную
+                    {successExtra?.cta_text ?? "На главную"}
                   </Button>
                 </Link>
               </motion.div>
@@ -135,18 +135,17 @@ const Booking = () => {
               >
                 <div className="text-center mb-12">
                   <Link
-                    to="/"
+                    to={headerExtra?.back_link_url ?? "/"}
                     className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
                   >
                     <ArrowLeft className="h-4 w-4" />
-                    Вернуться на главную
+                    {headerExtra?.back_link_text ?? "Вернуться на главную"}
                   </Link>
                   <h1 className="font-serif text-4xl md:text-5xl font-medium mb-4">
-                    Запись на услугу
+                    {bookingHeader.title}
                   </h1>
                   <p className="text-muted-foreground max-w-xl mx-auto">
-                    Заполните форму — мы подтвердим дату и подберем мастера под ваш
-                    запрос.
+                    {bookingHeader.description}
                   </p>
                 </div>
 
@@ -158,11 +157,11 @@ const Booking = () => {
                   <div className="space-y-6">
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-base">
-                        Имя и фамилия *
+                        {nameField?.title ?? "Имя и фамилия *"}
                       </Label>
                       <Input
                         id="name"
-                        placeholder="Анна Иванова"
+                        placeholder={nameField?.subtitle ?? ""}
                         className="h-12"
                         {...register("name")}
                       />
@@ -175,12 +174,12 @@ const Booking = () => {
 
                     <div className="space-y-2">
                       <Label htmlFor="phone" className="text-base">
-                        Телефон *
+                        {phoneField?.title ?? "Телефон *"}
                       </Label>
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder="+7 (900) 123-45-67"
+                        placeholder={phoneField?.subtitle ?? "+7 (900) 123-45-67"}
                         className="h-12"
                         {...register("phone")}
                       />
@@ -192,17 +191,22 @@ const Booking = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-base">Услуга *</Label>
+                      <Label className="text-base">
+                        {serviceField?.title ?? "Услуга *"}
+                      </Label>
                       <Select onValueChange={(value) => setValue("service", value)}>
                         <SelectTrigger className="h-12">
-                          <SelectValue placeholder="Выберите услугу" />
+                          <SelectValue placeholder={serviceField?.subtitle ?? ""} />
                         </SelectTrigger>
                         <SelectContent>
-                          {services.map((service) => (
-                            <SelectItem key={service.value} value={service.value}>
-                              {service.label}
-                            </SelectItem>
-                          ))}
+                          {services.map((service) => {
+                            const value = (service.meta as { value?: string })?.value ?? service.title;
+                            return (
+                              <SelectItem key={service.id} value={value}>
+                                {service.title}
+                              </SelectItem>
+                            );
+                          })}
                         </SelectContent>
                       </Select>
                       {errors.service && (
@@ -216,7 +220,7 @@ const Booking = () => {
                       <div className="space-y-2">
                         <Label htmlFor="date" className="text-base flex items-center gap-2">
                           <Calendar className="h-4 w-4 text-gold" />
-                          Дата *
+                          {dateField?.title ?? "Дата *"}
                         </Label>
                         <Input
                           id="date"
@@ -235,21 +239,21 @@ const Booking = () => {
                       <div className="space-y-2">
                         <Label className="text-base flex items-center gap-2">
                           <Clock className="h-4 w-4 text-gold" />
-                          Время *
+                          {timeField?.title ?? "Время *"}
                         </Label>
                         <div className="grid grid-cols-4 gap-2">
-                          {timeSlots.slice(0, 8).map((time) => (
+                          {timeSlots.map((time) => (
                             <button
-                              key={time}
+                              key={time.id}
                               type="button"
-                              onClick={() => setValue("time", time)}
+                              onClick={() => setValue("time", time.title)}
                               className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                                selectedTime === time
+                                selectedTime === time.title
                                   ? "bg-gold text-graphite shadow-gold"
                                   : "bg-muted hover:bg-accent"
                               }`}
                             >
-                              {time}
+                              {time.title}
                             </button>
                           ))}
                         </div>
@@ -263,11 +267,11 @@ const Booking = () => {
 
                     <div className="space-y-2">
                       <Label htmlFor="comment" className="text-base">
-                        Комментарий
+                        {commentField?.title ?? "Комментарий"}
                       </Label>
                       <Textarea
                         id="comment"
-                        placeholder="Пожелания или уточнения к услуге..."
+                        placeholder={commentField?.subtitle ?? ""}
                         className="min-h-[100px] resize-none"
                         {...register("comment")}
                       />
@@ -283,19 +287,23 @@ const Booking = () => {
                       {isSubmitting ? (
                         <span className="flex items-center gap-2">
                           <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Отправка...
+                          {formExtra?.submit_loading_text ?? "Отправка..."}
                         </span>
                       ) : (
-                        "Отправить заявку"
+                        formExtra?.submit_text ?? "Отправить заявку"
                       )}
                     </Button>
 
-                    <p className="text-center text-sm text-muted-foreground">
-                      Нажимая кнопку, вы соглашаетесь с{" "}
-                      <Link to="/privacy" className="text-gold hover:underline">
-                        политикой конфиденциальности
-                      </Link>
-                    </p>
+                    {formExtra?.consent_text && (
+                      <p className="text-center text-sm text-muted-foreground">
+                        {formExtra.consent_text}{" "}
+                        {formExtra.consent_url && (
+                          <Link to={formExtra.consent_url} className="text-gold hover:underline">
+                            Политика конфиденциальности
+                          </Link>
+                        )}
+                      </p>
+                    )}
                   </div>
                 </form>
               </motion.div>

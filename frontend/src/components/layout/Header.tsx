@@ -6,18 +6,16 @@ import { useTheme } from "next-themes";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { scrollToSection } from "@/lib/scrollToSection";
-
-const navLinks = [
-  { href: "#services", label: "Услуги" },
-  { href: "#prices", label: "Цены" },
-  { href: "#portfolio", label: "Портфолио" },
-  { href: "#reviews", label: "Отзывы" },
-  { href: "#about", label: "О нас" },
-  { href: "#steps", label: "Этапы" },
-  { href: "#contacts", label: "Контакты" },
-];
+import { useSiteSettings } from "@/hooks/useContent";
 
 export function Header() {
+  const { data: settings } = useSiteSettings();
+  const navLinks = settings?.navigation_links ?? [];
+  const phoneDisplay = settings?.phone_display ?? "+7 (900) 123-45-67";
+  const phoneLink = settings?.phone ? `tel:${settings.phone}` : "tel:+79001234567";
+  const brandName = settings?.site_name ?? "Belleza";
+  const bookingLabel = "Записаться";
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -103,7 +101,7 @@ export function Header() {
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2 whitespace-nowrap">
           <span className="font-serif text-2xl font-semibold text-gradient-gold">
-            Belleza
+            {brandName}
           </span>
         </Link>
 
@@ -125,10 +123,10 @@ export function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
-          <a href="tel:+79001234567" className="whitespace-nowrap">
+          <a href={phoneLink} className="whitespace-nowrap">
             <Button variant="ghost" size="sm" className="h-10 gap-2 px-3">
               <Phone className="h-4 w-4" />
-              <span className="hidden lg:inline">+7 (900) 123-45-67</span>
+              <span className="hidden lg:inline">{phoneDisplay}</span>
             </Button>
           </a>
           <button
@@ -141,7 +139,7 @@ export function Header() {
           </button>
           <Link to="/booking#booking">
             <Button variant="gold" size="sm" className="h-10 rounded-full px-5">
-              Записаться
+              {bookingLabel}
             </Button>
           </Link>
         </div>
@@ -203,7 +201,7 @@ export function Header() {
                 <div className="flex items-center justify-between mb-4">
                   <Link to="/" className="flex items-center gap-2">
                     <span className="font-serif text-2xl font-semibold text-gradient-gold">
-                      Belleza
+                      {brandName}
                     </span>
                   </Link>
                   <button
@@ -232,15 +230,15 @@ export function Header() {
                 </div>
 
                 <div className="mt-6 flex flex-col gap-3">
-                  <a href="tel:+79001234567" className="w-full">
+                  <a href={phoneLink} className="w-full">
                     <Button variant="outline" className="h-11 w-full gap-2">
                       <Phone className="h-4 w-4" />
-                      +7 (900) 123-45-67
+                      {phoneDisplay}
                     </Button>
                   </a>
                   <Link to="/booking#booking" onClick={() => setIsMobileMenuOpen(false)}>
                     <Button variant="gold" className="h-11 w-full rounded-full">
-                      Записаться
+                      {bookingLabel}
                     </Button>
                   </Link>
                 </div>

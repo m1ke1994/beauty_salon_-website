@@ -1,24 +1,17 @@
-import { Clock, Instagram, MapPin, MessageCircle, Phone, Send } from "lucide-react";
+import { Clock, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const socialLinks = [
-  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-  { icon: Send, href: "https://t.me/belleza", label: "Telegram" },
-  { icon: MessageCircle, href: "https://wa.me/79001234567", label: "WhatsApp" },
-];
-
-const quickLinks = [
-  { href: "/#services", label: "Услуги" },
-  { href: "/#prices", label: "Цены" },
-  { href: "/#portfolio", label: "Портфолио" },
-  { href: "/#reviews", label: "Отзывы" },
-  { href: "/#about", label: "О нас" },
-  { href: "/#contacts", label: "Контакты" },
-  { href: "/booking#booking", label: "Записаться онлайн" },
-];
+import { useSiteSettings } from "@/hooks/useContent";
+import { getIconByName } from "@/lib/iconMap";
 
 export function Footer() {
+  const { data: settings } = useSiteSettings();
   const currentYear = new Date().getFullYear();
+  const brandName = settings?.site_name ?? "Belleza";
+  const footerText = settings?.footer_text ?? "";
+  const quickLinks = settings?.footer_links ?? [];
+  const socialLinks = settings?.social_links ?? [];
+  const phoneDisplay = settings?.phone_display ?? "+7 (900) 123-45-67";
+  const phoneLink = settings?.phone ? `tel:${settings.phone}` : "tel:+79001234567";
 
   return (
     <footer
@@ -29,25 +22,29 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           <div className="lg:col-span-1">
             <h3 className="font-serif text-3xl font-semibold text-gold mb-4">
-              Belleza
+              {brandName}
             </h3>
-            <p className="text-white/70 text-sm leading-relaxed mb-6 dark:text-muted-foreground">
-              Салон красоты с атмосферой частного клуба. Эстетика, сервис и
-              безупречное качество в каждой детали.
-            </p>
+            {footerText && (
+              <p className="text-white/70 text-sm leading-relaxed mb-6 dark:text-muted-foreground">
+                {footerText}
+              </p>
+            )}
             <div className="flex gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold transition-colors duration-300 dark:bg-muted"
-                  aria-label={social.label}
-                >
-                  <social.icon className="h-5 w-5" />
-                </a>
-              ))}
+              {socialLinks.map((social) => {
+                const Icon = getIconByName(social.icon);
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold transition-colors duration-300 dark:bg-muted"
+                    aria-label={social.label}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
@@ -82,24 +79,28 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-gold shrink-0 mt-0.5" />
                 <span className="text-white/70 text-sm dark:text-muted-foreground">
-                  г. Москва, ул. Тверская, д. 15, офис 301
+                  {settings?.address ?? ""}
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-gold shrink-0" />
                 <a
-                  href="tel:+79001234567"
+                  href={phoneLink}
                   className="text-white/70 hover:text-gold transition-colors text-sm dark:text-muted-foreground"
                 >
-                  +7 (900) 123-45-67
+                  {phoneDisplay}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <Clock className="h-5 w-5 text-gold shrink-0 mt-0.5" />
                 <span className="text-white/70 text-sm dark:text-muted-foreground">
-                  Пн–Сб: 10:00–21:00
-                  <br />
-                  Вс: 11:00–19:00
+                  {settings?.work_hours ?? ""}
+                  {settings?.work_hours_note && (
+                    <>
+                      <br />
+                      {settings.work_hours_note}
+                    </>
+                  )}
                 </span>
               </li>
             </ul>
@@ -108,7 +109,7 @@ export function Footer() {
           <div>
             <h4 className="font-serif text-xl mb-4">Запись</h4>
             <p className="text-white/70 text-sm mb-4 dark:text-muted-foreground">
-              Выберите удобное время и получите первоклассный сервис.
+              Оставьте заявку онлайн, и мы подберем удобное время для визита.
             </p>
             <Link
               to="/booking#booking"
@@ -121,7 +122,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 dark:border-border">
           <p className="text-white/50 text-sm dark:text-muted-foreground">
-            © {currentYear} Belleza. Все права защищены.
+            © {currentYear} {brandName}. Все права защищены.
           </p>
           <div className="flex gap-6">
             <Link

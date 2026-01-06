@@ -2,53 +2,22 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { Reveal } from "@/components/anim/Reveal";
-
-const reviews = [
-  {
-    id: 1,
-    name: "Мария К.",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-    rating: 5,
-    text:
-      "Идеальный маникюр, очень аккуратно и красиво. Атмосфера как в частном клубе, мастера — настоящие профессионалы.",
-    service: "Маникюр + покрытие",
-    date: "15 октября 2024",
-  },
-  {
-    id: 2,
-    name: "Алина Р.",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-    rating: 5,
-    text:
-      "Делала ресницы 2D — получился мягкий, естественный эффект. Ничего не утяжеляет, держится идеально.",
-    service: "Эффект 2D",
-    date: "8 октября 2024",
-  },
-  {
-    id: 3,
-    name: "Екатерина М.",
-    avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop",
-    rating: 5,
-    text:
-      "Ламинирование бровей — это любовь. Сразу другой взгляд и ухоженность, без лишнего макияжа.",
-    service: "Ламинирование бровей",
-    date: "1 октября 2024",
-  },
-  {
-    id: 4,
-    name: "Ольга Т.",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop",
-    rating: 5,
-    text:
-      "SPA‑педикюр — настоящее расслабление. Очень комфортно, результат заметен сразу. Вернусь еще.",
-    service: "SPA‑педикюр",
-    date: "25 сентября 2024",
-  },
-];
+import { usePage, useReviews } from "@/hooks/useContent";
+import { findSection, sortByOrder } from "@/lib/content";
 
 export function ReviewsSection() {
+  const { data: page } = usePage("home");
+  const { data: reviewsData } = useReviews();
+  const section = findSection(page, "reviews");
+  const reviews = sortByOrder(reviewsData);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex >= reviews.length) {
+      setCurrentIndex(0);
+    }
+  }, [currentIndex, reviews.length]);
 
   const goToPrevious = () => {
     setDirection(-1);
@@ -61,41 +30,47 @@ export function ReviewsSection() {
   };
 
   useEffect(() => {
+    if (reviews.length === 0) {
+      return;
+    }
     const timer = setInterval(() => {
       setDirection(1);
       setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [reviews.length]);
 
   const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 100 : -100,
+    enter: (dir: number) => ({
+      x: dir > 0 ? 100 : -100,
       opacity: 0,
     }),
     center: {
       x: 0,
       opacity: 1,
     },
-    exit: (direction: number) => ({
-      x: direction < 0 ? 100 : -100,
+    exit: (dir: number) => ({
+      x: dir < 0 ? 100 : -100,
       opacity: 0,
     }),
   };
+
+  if (!section || reviews.length === 0) {
+    return null;
+  }
 
   return (
     <section id="reviews" className="section-padding scroll-mt-header">
       <div className="container-narrow">
         <Reveal variant="fadeUp" className="text-center mb-16">
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
-            Отзывы клиентов
+            {section.subtitle}
           </span>
           <h2 className="font-serif text-4xl md:text-5xl font-medium mt-3 mb-4">
-            Нам доверяют уход
+            {section.title}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Сотни девушек выбирают Belleza за стабильное качество, эстетику и
-            внимательное отношение.
+            {section.description}
           </p>
         </Reveal>
 
@@ -116,7 +91,7 @@ export function ReviewsSection() {
               >
                 <div className="bg-card rounded-2xl p-8 md:p-10 shadow-card text-center">
                   <img
-                    src={reviews[currentIndex].avatar}
+                    src={reviews[currentIndex].avatar_url}
                     alt={reviews[currentIndex].name}
                     width={80}
                     height={80}
@@ -146,7 +121,7 @@ export function ReviewsSection() {
                       {reviews[currentIndex].name}
                     </div>
                     <div className="text-sm text-muted-foreground mt-1">
-                      {reviews[currentIndex].service} · {reviews[currentIndex].date}
+                      {reviews[currentIndex].service} — {reviews[currentIndex].date}
                     </div>
                   </div>
                 </div>

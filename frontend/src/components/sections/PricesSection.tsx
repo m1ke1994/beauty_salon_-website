@@ -2,77 +2,39 @@ import { Check, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/anim/Reveal";
-
-const priceCategories = [
-  {
-    title: "Маникюр",
-    items: [
-      { name: "Классический маникюр", price: "1 200 ₽", duration: "60 мин" },
-      {
-        name: "Маникюр + покрытие гель‑лак",
-        price: "2 500 ₽",
-        duration: "90 мин",
-        popular: true,
-      },
-      { name: "Укрепление + дизайн", price: "3 000 ₽", duration: "100 мин" },
-      { name: "Снятие покрытия", price: "400 ₽", duration: "" },
-    ],
-  },
-  {
-    title: "Педикюр",
-    items: [
-      { name: "Классический педикюр", price: "2 000 ₽", duration: "75 мин" },
-      {
-        name: "Педикюр + покрытие гель‑лак",
-        price: "3 200 ₽",
-        duration: "105 мин",
-        popular: true,
-      },
-      { name: "SPA‑педикюр", price: "4 000 ₽", duration: "120 мин" },
-    ],
-  },
-  {
-    title: "Ресницы",
-    items: [
-      { name: "Классическое наращивание", price: "3 000 ₽", duration: "120 мин" },
-      { name: "Эффект 2D", price: "3 500 ₽", duration: "150 мин", popular: true },
-      { name: "Эффект 3D–5D", price: "4 500 ₽", duration: "180 мин" },
-      { name: "Ламинирование + ботокс", price: "2 500 ₽", duration: "60 мин" },
-      { name: "Снятие ресниц", price: "500 ₽", duration: "30 мин" },
-    ],
-  },
-  {
-    title: "Брови",
-    items: [
-      { name: "Коррекция + окрашивание", price: "1 200 ₽", duration: "45 мин" },
-      { name: "Окрашивание бровей", price: "800 ₽", duration: "30 мин" },
-      { name: "Ламинирование бровей", price: "1 500 ₽", duration: "60 мин", popular: true },
-      { name: "Ламинирование + окрашивание", price: "2 000 ₽", duration: "60 мин" },
-    ],
-  },
-];
+import { usePage, usePriceCategories } from "@/hooks/useContent";
+import { findSection, sortByOrder } from "@/lib/content";
 
 export function PricesSection() {
+  const { data: page } = usePage("home");
+  const { data: priceCategoriesData } = usePriceCategories();
+  const section = findSection(page, "prices");
+  const categories = sortByOrder(priceCategoriesData);
+  const extra = section?.extra as Record<string, string> | undefined;
+
+  if (!section) {
+    return null;
+  }
+
   return (
     <section id="prices" className="section-padding scroll-mt-header">
       <div className="container-narrow">
         <Reveal variant="fadeUp" className="text-center mb-16">
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
-            Прозрачные и честные цены
+            {section.subtitle}
           </span>
           <h2 className="font-serif text-4xl md:text-5xl font-medium mt-3 mb-4">
-            Прайс‑лист
+            {section.title}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Все услуги фиксированы по стоимости. Окончательная цена зависит от
-            выбранного дизайна и сложности работы.
+            {section.description}
           </p>
         </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {priceCategories.map((category, categoryIndex) => (
+          {categories.map((category, categoryIndex) => (
             <Reveal
-              key={category.title}
+              key={category.id}
               variant="fadeUp"
               delay={categoryIndex * 0.08}
               className="bg-card rounded-2xl p-6 md:p-8 shadow-soft"
@@ -81,9 +43,9 @@ export function PricesSection() {
                 {category.title}
               </h3>
               <ul className="space-y-4">
-                {category.items.map((item, itemIndex) => (
+                {sortByOrder(category.items).map((item, itemIndex) => (
                   <li
-                    key={itemIndex}
+                    key={item.id}
                     className={`flex items-center justify-between py-3 ${
                       itemIndex !== category.items.length - 1
                         ? "border-b border-border/50"
@@ -91,10 +53,10 @@ export function PricesSection() {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      {item.popular && (
+                      {item.is_popular && (
                         <span className="flex items-center gap-1 text-xs font-medium text-gold bg-gold/10 px-2 py-1 rounded-full">
                           <Star className="h-3 w-3 fill-current" />
-                          Хит
+                          Популярно
                         </span>
                       )}
                       <div>
@@ -118,19 +80,25 @@ export function PricesSection() {
           ))}
         </div>
 
-        <Reveal variant="fadeUp" delay={0.2} className="text-center mt-12">
-          <div className="inline-flex items-center gap-2 text-muted-foreground mb-6">
-            <Check className="h-5 w-5 text-gold" />
-            <span>Консультация мастера включена в стоимость</span>
-          </div>
-          <div>
-            <Link to="/booking">
-              <Button variant="gold" size="lg">
-                Записаться на услугу
-              </Button>
-            </Link>
-          </div>
-        </Reveal>
+        {(extra?.note || extra?.cta_text) && (
+          <Reveal variant="fadeUp" delay={0.2} className="text-center mt-12">
+            {extra?.note && (
+              <div className="inline-flex items-center gap-2 text-muted-foreground mb-6">
+                <Check className="h-5 w-5 text-gold" />
+                <span>{extra.note}</span>
+              </div>
+            )}
+            {extra?.cta_text && (
+              <div>
+                <Link to={extra?.cta_url ?? "/booking"}>
+                  <Button variant="gold" size="lg">
+                    {extra.cta_text}
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </Reveal>
+        )}
       </div>
     </section>
   );

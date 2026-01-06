@@ -1,57 +1,42 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Reveal } from "@/components/anim/Reveal";
-
-const portfolioItems = [
-  {
-    id: 1,
-    category: "Маникюр",
-    image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=600&h=600&fit=crop",
-    title: "Нюдовый маникюр с архитектурой",
-  },
-  {
-    id: 2,
-    category: "Ресницы",
-    image: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=600&h=600&fit=crop",
-    title: "Эффект 2D с мягким изгибом",
-  },
-  {
-    id: 3,
-    category: "Маникюр",
-    image: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=600&h=600&fit=crop",
-    title: "Глянцевое покрытие и тонкий дизайн",
-  },
-  {
-    id: 4,
-    category: "Брови",
-    image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600&h=600&fit=crop",
-    title: "Ламинирование и окрашивание бровей",
-  },
-  {
-    id: 5,
-    category: "Педикюр",
-    image: "https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=600&h=600&fit=crop",
-    title: "SPA‑педикюр с уходом",
-  },
-  {
-    id: 6,
-    category: "Маникюр",
-    image: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=600&h=600&fit=crop",
-    title: "Френч с современной линией",
-  },
-];
-
-const categories = ["Все", "Маникюр", "Педикюр", "Ресницы", "Брови"];
+import { usePage, usePortfolioItems } from "@/hooks/useContent";
+import { findSection, sortByOrder } from "@/lib/content";
 
 export function PortfolioSection() {
-  const [activeCategory, setActiveCategory] = useState("Все");
+  const { data: page } = usePage("home");
+  const { data: portfolioItemsData } = usePortfolioItems();
+  const section = findSection(page, "portfolio");
+  const items = sortByOrder(portfolioItemsData);
+  const extra = section?.extra as Record<string, unknown> | undefined;
+  const categories = useMemo(() => {
+    const extraCategories = Array.isArray(extra?.categories) ? extra?.categories : [];
+    if (extraCategories.length > 0) {
+      return extraCategories as string[];
+    }
+    const unique = new Set(items.map((item) => item.category));
+    return ["Все", ...Array.from(unique)];
+  }, [extra, items]);
+
+  const [activeCategory, setActiveCategory] = useState(categories[0] ?? "Все");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  if (!section) {
+    return null;
+  }
+
+  useEffect(() => {
+    if (!categories.includes(activeCategory)) {
+      setActiveCategory(categories[0] ?? "Все");
+    }
+  }, [activeCategory, categories]);
 
   const filteredItems =
     activeCategory === "Все"
-      ? portfolioItems
-      : portfolioItems.filter((item) => item.category === activeCategory);
+      ? items
+      : items.filter((item) => item.category === activeCategory);
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
@@ -77,14 +62,13 @@ export function PortfolioSection() {
       <div className="container-narrow">
         <Reveal variant="fadeUp" className="text-center mb-12">
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
-            Портфолио работ
+            {section.subtitle}
           </span>
           <h2 className="font-serif text-4xl md:text-5xl font-medium mt-3 mb-4">
-            Галерея впечатлений
+            {section.title}
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Эстетика, аккуратность и стойкий результат. Примеры работ, которые
-            вдохновляют и задают высокий стандарт качества.
+            {section.description}
           </p>
         </Reveal>
 
@@ -122,7 +106,7 @@ export function PortfolioSection() {
                 className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer"
               >
                 <img
-                  src={item.image}
+                  src={item.image_url}
                   alt={item.title}
                   width={600}
                   height={600}
@@ -145,7 +129,7 @@ export function PortfolioSection() {
         </motion.div>
 
         <AnimatePresence>
-          {lightboxIndex !== null && (
+          {lightboxIndex !== null && filteredItems[lightboxIndex] && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -167,7 +151,7 @@ export function PortfolioSection() {
                   goToPrevious();
                 }}
                 className="absolute left-4 md:left-8 text-white/70 hover:text-white transition-colors"
-                aria-label="Предыдущее фото"
+                aria-label="Предыдущее"
               >
                 <ChevronLeft className="h-10 w-10" />
               </button>
@@ -177,7 +161,7 @@ export function PortfolioSection() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                src={filteredItems[lightboxIndex].image}
+                src={filteredItems[lightboxIndex].image_url}
                 alt={filteredItems[lightboxIndex].title}
                 width={900}
                 height={900}
@@ -191,7 +175,7 @@ export function PortfolioSection() {
                   goToNext();
                 }}
                 className="absolute right-4 md:right-8 text-white/70 hover:text-white transition-colors"
-                aria-label="Следующее фото"
+                aria-label="Следующее"
               >
                 <ChevronRight className="h-10 w-10" />
               </button>
