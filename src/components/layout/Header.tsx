@@ -1,7 +1,8 @@
 import type { MouseEvent } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Phone, X } from "lucide-react";
+import { Menu, Moon, Phone, Sun, X } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { scrollToSection } from "@/lib/scrollToSection";
@@ -19,8 +20,11 @@ const navLinks = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const { resolvedTheme, setTheme } = useTheme();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const isDark = useMemo(() => resolvedTheme === "dark", [resolvedTheme]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,6 +51,35 @@ export function Header() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    let rafId = 0;
+    const updateProgress = () => {
+      const doc = document.documentElement;
+      const total = doc.scrollHeight - window.innerHeight;
+      const progress = total > 0 ? (window.scrollY / total) * 100 : 0;
+      setScrollProgress(Math.min(100, Math.max(0, progress)));
+    };
+    const onScroll = () => {
+      if (rafId) {
+        return;
+      }
+      rafId = window.requestAnimationFrame(() => {
+        updateProgress();
+        rafId = 0;
+      });
+    };
+    updateProgress();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
+  }, []);
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
     const targetId = href.replace("#", "");
@@ -98,6 +131,14 @@ export function Header() {
               <span className="hidden lg:inline">+7 (900) 123-45-67</span>
             </Button>
           </a>
+          <button
+            type="button"
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground transition-colors hover:bg-accent"
+            aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+          >
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
           <Link to="/booking#booking">
             <Button variant="gold" size="sm" className="h-10 rounded-full px-5">
               Записаться
@@ -105,15 +146,32 @@ export function Header() {
           </Link>
         </div>
 
-        <button
-          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground transition-colors hover:bg-accent"
-          aria-label="Toggle menu"
-          aria-expanded={isMobileMenuOpen}
-          aria-controls="mobile-menu"
-        >
-          {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            type="button"
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground transition-colors hover:bg-accent"
+            aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+          >
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+          <button
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/80 text-foreground transition-colors hover:bg-accent"
+            aria-label="Toggle menu"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
+          >
+            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      <div className="h-0.5 w-full bg-border/40">
+        <div
+          className="h-full bg-gradient-to-r from-gold to-gold-dark transition-[width] duration-150"
+          style={{ width: `${scrollProgress}%` }}
+        />
       </div>
 
       <AnimatePresence>

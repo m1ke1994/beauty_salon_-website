@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PwaUpdatePrompt } from "@/components/PwaUpdatePrompt";
@@ -34,21 +35,23 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <PwaUpdatePrompt />
-        <ErrorBoundary>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/booking" element={<Booking />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </ErrorBoundary>
-      </TooltipProvider>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <PwaUpdatePrompt />
+          <ErrorBoundary>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/booking" element={<Booking />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </ErrorBoundary>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
