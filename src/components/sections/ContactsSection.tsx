@@ -146,7 +146,7 @@ export function ContactsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="relative aspect-square lg:aspect-auto lg:h-full min-h-[400px] rounded-2xl overflow-hidden shadow-card"
+            className="relative w-full overflow-hidden rounded-2xl shadow-card aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-full min-h-[260px] lg:min-h-[400px]"
           >
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.4319842726896!2d37.60396231593095!3d55.76429998055629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a50b315e573%3A0xa886bf5a3d9b2e68!2z0KLQstC10YDRgdC60LDRjyDRg9C7Liwg0JzQvtGB0LrQstCw!5e0!3m2!1sru!2sru!4v1609836657000!5m2!1sru!2sru"
@@ -157,7 +157,7 @@ export function ContactsSection() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               title="Location map"
-              className="grayscale hover:grayscale-0 transition-all duration-500"
+              className="h-full w-full grayscale transition-all duration-500 hover:grayscale-0"
             />
             <div className="absolute top-4 left-4 bg-card/95 backdrop-blur-sm rounded-lg p-4 shadow-soft">
               <div className="font-serif text-lg font-medium">Belleza</div>
