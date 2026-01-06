@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useAnimationControls,
@@ -16,6 +16,7 @@ type RevealProps = {
   duration?: number;
   amount?: number;
   margin?: string;
+  disableMobile?: boolean;
   className?: string;
   staggerChildren?: number;
 };
@@ -27,16 +28,31 @@ export function Reveal({
   duration = 0.75,
   amount = 0.28,
   margin = "0px 0px -12% 0px",
+  disableMobile = false,
   className,
   staggerChildren,
 }: RevealProps) {
   const shouldReduceMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const hideTimeout = useRef<number | null>(null);
   const controls = useAnimationControls();
   const isInView = useInView(ref, { amount, margin });
 
   useEffect(() => {
+    const mql = window.matchMedia("(max-width: 640px)");
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (disableMobile && isMobile) {
+      controls.start("show");
+      return;
+    }
+
     if (isInView) {
       if (hideTimeout.current) {
         window.clearTimeout(hideTimeout.current);
@@ -65,12 +81,13 @@ export function Reveal({
     ...(staggerChildren ? { staggerChildren, delayChildren: delay } : {}),
   };
 
-  const baseHidden = { opacity: 0 };
+  const canTransform = !(disableMobile && isMobile) && !shouldReduceMotion;
+  const baseHidden = disableMobile && isMobile ? { opacity: 1 } : { opacity: 0 };
   const baseShow = { opacity: 1, transition };
 
   const variants = {
     fadeUp: {
-      hidden: { ...baseHidden, y: shouldReduceMotion ? 0 : 16 },
+      hidden: { ...baseHidden, y: canTransform ? 16 : 0 },
       show: { ...baseShow, y: 0 },
     },
     fade: {
@@ -78,17 +95,17 @@ export function Reveal({
       show: baseShow,
     },
     slideLeft: {
-      hidden: { ...baseHidden, x: shouldReduceMotion ? 0 : -20 },
+      hidden: { ...baseHidden, x: canTransform ? -20 : 0 },
       show: { ...baseShow, x: 0 },
     },
     slideRight: {
-      hidden: { ...baseHidden, x: shouldReduceMotion ? 0 : 20 },
+      hidden: { ...baseHidden, x: canTransform ? 20 : 0 },
       show: { ...baseShow, x: 0 },
     },
     scale: {
       hidden: {
         ...baseHidden,
-        scale: shouldReduceMotion ? 1 : 0.98,
+        scale: canTransform ? 0.98 : 1,
       },
       show: { ...baseShow, scale: 1 },
     },

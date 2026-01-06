@@ -47,6 +47,7 @@ export function ServicesSection() {
           variant="fadeUp"
           amount={0.4}
           margin="0px 0px -20% 0px"
+          disableMobile
           className="text-center mb-16"
         >
           <span className="text-sm font-medium text-gold uppercase tracking-widest">
@@ -69,6 +70,7 @@ export function ServicesSection() {
               delay={index * 0.08}
               amount={0.4}
               margin="0px 0px -20% 0px"
+              disableMobile
               className={`group relative bg-card rounded-2xl p-8 shadow-soft hover:shadow-card transition-all duration-500 ${
                 index === services.length - 1 && services.length % 3 === 1
                   ? "lg:col-start-2"
