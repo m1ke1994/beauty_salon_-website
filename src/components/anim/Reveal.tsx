@@ -15,6 +15,7 @@ type RevealProps = {
   delay?: number;
   duration?: number;
   amount?: number;
+  margin?: string;
   className?: string;
   staggerChildren?: number;
 };
@@ -25,21 +26,36 @@ export function Reveal({
   delay = 0,
   duration = 0.75,
   amount = 0.28,
+  margin = "0px 0px -12% 0px",
   className,
   staggerChildren,
 }: RevealProps) {
   const shouldReduceMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement | null>(null);
+  const hideTimeout = useRef<number | null>(null);
   const controls = useAnimationControls();
-  const isInView = useInView(ref, { amount });
+  const isInView = useInView(ref, { amount, margin });
 
   useEffect(() => {
     if (isInView) {
+      if (hideTimeout.current) {
+        window.clearTimeout(hideTimeout.current);
+        hideTimeout.current = null;
+      }
       controls.start("show");
     } else {
-      controls.start("hidden");
+      const delayMs = shouldReduceMotion ? 0 : 120;
+      hideTimeout.current = window.setTimeout(() => {
+        controls.start("hidden");
+      }, delayMs);
     }
-  }, [controls, isInView]);
+    return () => {
+      if (hideTimeout.current) {
+        window.clearTimeout(hideTimeout.current);
+        hideTimeout.current = null;
+      }
+    };
+  }, [controls, isInView, shouldReduceMotion]);
 
   const easing: [number, number, number, number] = [0.16, 1, 0.3, 1];
   const transition = {
