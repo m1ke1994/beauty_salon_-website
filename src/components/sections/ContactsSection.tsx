@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Clock, Instagram, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { YandexMap } from "@/components/ui/YandexMap";
+import { YA_MAP_PLACE_URL, YA_MAP_ROUTE_URL } from "@/config/links";
 
 const contactInfo = [
   {
@@ -146,24 +148,32 @@ export function ContactsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="relative w-full overflow-hidden rounded-2xl shadow-card aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-full min-h-[260px] lg:min-h-[400px]"
+            className="relative"
           >
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.4319842726896!2d37.60396231593095!3d55.76429998055629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54a50b315e573%3A0xa886bf5a3d9b2e68!2z0KLQstC10YDRgdC60LDRjyDRg9C7Liwg0JzQvtGB0LrQstCw!5e0!3m2!1sru!2sru!4v1609836657000!5m2!1sru!2sru"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Location map"
-              className="h-full w-full grayscale transition-all duration-500 hover:grayscale-0"
-            />
+            <YandexMap />
             <div className="absolute top-4 left-4 bg-card/95 backdrop-blur-sm rounded-lg p-4 shadow-soft">
               <div className="font-serif text-lg font-medium">Belleza</div>
               <div className="text-sm text-muted-foreground">
-                ул. Тверская, 15
+                {"\u0443\u043b. \u0422\u0432\u0435\u0440\u0441\u043a\u0430\u044f, 15"}
               </div>
+            </div>
+            <div className="mt-4 flex flex-col sm:flex-row gap-3">
+              <a
+                href={YA_MAP_PLACE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-background/80 px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+              >
+                {"\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0432 \u042f\u043d\u0434\u0435\u043a\u0441.\u041a\u0430\u0440\u0442\u0430\u0445"}
+              </a>
+              <a
+                href={YA_MAP_ROUTE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-background/80 px-5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+              >
+                {"\u041f\u043e\u0441\u0442\u0440\u043e\u0438\u0442\u044c \u043c\u0430\u0440\u0448\u0440\u0443\u0442"}
+              </a>
             </div>
           </motion.div>
         </div>
