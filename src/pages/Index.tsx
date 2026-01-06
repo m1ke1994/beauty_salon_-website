@@ -9,10 +9,12 @@ import { AboutSection } from "@/components/sections/AboutSection";
 import { StepsSection } from "@/components/sections/StepsSection";
 import { ContactsSection } from "@/components/sections/ContactsSection";
 import { CTASection } from "@/components/sections/CTASection";
+import { ScrollArrows } from "@/components/ui/ScrollArrows";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <span id="top" className="sr-only" aria-hidden="true" />
       <Header />
       <main>
         <HeroSection />
@@ -26,6 +28,7 @@ const Index = () => {
         <CTASection />
       </main>
       <Footer />
+      <ScrollArrows />
     </div>
   );
 };
