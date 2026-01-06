@@ -38,8 +38,7 @@ export class ErrorBoundary extends Component<
               Что-то пошло не так
             </h1>
             <p className="text-muted-foreground mb-6">
-              Попробуйте обновить страницу. Если ошибка повторится, свяжитесь с
-              нами.
+              Попробуйте обновить страницу. Если ошибка повторится, свяжитесь с нами.
             </p>
             <button
               type="button"

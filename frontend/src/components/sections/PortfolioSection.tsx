@@ -23,15 +23,15 @@ export function PortfolioSection() {
   const [activeCategory, setActiveCategory] = useState(categories[0] ?? "Все");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  if (!section) {
-    return null;
-  }
-
   useEffect(() => {
     if (!categories.includes(activeCategory)) {
       setActiveCategory(categories[0] ?? "Все");
     }
   }, [activeCategory, categories]);
+
+  if (!section) {
+    return null;
+  }
 
   const filteredItems =
     activeCategory === "Все"

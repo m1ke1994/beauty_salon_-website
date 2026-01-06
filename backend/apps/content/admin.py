@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import Page, Section, SectionItem, Review, PriceCategory, PriceItem, PortfolioItem
+from .models import (
+    Page,
+    Section,
+    SectionItem,
+    Review,
+    PriceCategory,
+    PriceItem,
+    PortfolioItem,
+    BookingRequest,
+)
 
 
 class SectionInline(admin.TabularInline):
@@ -77,3 +86,10 @@ class PortfolioItemAdmin(admin.ModelAdmin):
     list_filter = ("category",)
     search_fields = ("title",)
     ordering = ("order",)
+
+
+@admin.register(BookingRequest)
+class BookingRequestAdmin(admin.ModelAdmin):
+    list_display = ("name", "phone", "service", "date", "time", "created_at")
+    search_fields = ("name", "phone", "service", "comment")
+    ordering = ("-created_at",)

@@ -1,10 +1,11 @@
-from rest_framework import viewsets
-from .models import Page, Review, PriceCategory, PortfolioItem
+from rest_framework import mixins, viewsets
+from .models import Page, Review, PriceCategory, PortfolioItem, BookingRequest
 from .serializers import (
     PageSerializer,
     ReviewSerializer,
     PriceCategorySerializer,
     PortfolioItemSerializer,
+    BookingRequestSerializer,
 )
 
 
@@ -31,3 +32,8 @@ class PriceCategoryViewSet(viewsets.ReadOnlyModelViewSet):
 class PortfolioItemViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = PortfolioItem.objects.all().order_by("order")
     serializer_class = PortfolioItemSerializer
+
+
+class BookingRequestViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = BookingRequest.objects.all().order_by("-created_at")
+    serializer_class = BookingRequestSerializer

@@ -1,5 +1,14 @@
 from rest_framework import serializers
-from .models import Page, Section, SectionItem, Review, PriceCategory, PriceItem, PortfolioItem
+from .models import (
+    Page,
+    Section,
+    SectionItem,
+    Review,
+    PriceCategory,
+    PriceItem,
+    PortfolioItem,
+    BookingRequest,
+)
 
 
 class SectionItemSerializer(serializers.ModelSerializer):
@@ -68,3 +77,10 @@ class PortfolioItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PortfolioItem
         fields = ("id", "category", "title", "image_url", "order")
+
+
+class BookingRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookingRequest
+        fields = ("id", "name", "phone", "service", "date", "time", "comment", "created_at")
+        read_only_fields = ("id", "created_at")

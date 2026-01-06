@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { scrollToSection } from "@/lib/scrollToSection";
 import { usePage } from "@/hooks/useContent";
 import { findSection, sortItems } from "@/lib/content";
+import { api } from "@/lib/api";
 
 const bookingSchema = z.object({
   name: z.string().min(2, "Введите имя"),
@@ -53,6 +54,7 @@ const Booking = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const location = useLocation();
 
   const {
@@ -69,10 +71,19 @@ const Booking = () => {
 
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Booking data:", data);
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    setErrorMessage("");
+    try {
+      const response = await api.createBookingRequest(data);
+      if (!response.ok) {
+        throw new Error(`Request failed: ${response.status}`);
+      }
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Booking request failed:", error);
+      setErrorMessage("Не удалось отправить заявку. Попробуйте еще раз.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const today = useMemo(() => new Date().toISOString().split("T")[0], []);
@@ -293,6 +304,12 @@ const Booking = () => {
                         formExtra?.submit_text ?? "Отправить заявку"
                       )}
                     </Button>
+
+                    {errorMessage && (
+                      <p className="text-center text-sm text-destructive">
+                        {errorMessage}
+                      </p>
+                    )}
 
                     {formExtra?.consent_text && (
                       <p className="text-center text-sm text-muted-foreground">

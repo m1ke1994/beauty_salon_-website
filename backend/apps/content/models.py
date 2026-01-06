@@ -118,3 +118,21 @@ class PortfolioItem(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+
+class BookingRequest(models.Model):
+    name = models.CharField("Имя", max_length=200)
+    phone = models.CharField("Телефон", max_length=50)
+    service = models.CharField("Услуга", max_length=200)
+    date = models.CharField("Дата", max_length=100)
+    time = models.CharField("Время", max_length=50)
+    comment = models.TextField("Комментарий", blank=True)
+    created_at = models.DateTimeField("Создано", auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Заявка на запись"
+        verbose_name_plural = "Заявки на запись"
+
+    def __str__(self) -> str:
+        return f"{self.name} — {self.service}"

@@ -106,10 +106,25 @@ export type SiteSettings = {
   extra: Record<string, unknown>;
 };
 
+export type BookingRequestPayload = {
+  name: string;
+  phone: string;
+  service: string;
+  date: string;
+  time: string;
+  comment?: string;
+};
+
 export const api = {
   getPage: (slug: string) => fetchJson<Page>(`/pages/${slug}/`),
   getReviews: () => fetchJson<Review[]>("/reviews/"),
   getPriceCategories: () => fetchJson<PriceCategory[]>("/price-categories/"),
   getPortfolioItems: () => fetchJson<PortfolioItem[]>("/portfolio-items/"),
   getSiteSettings: () => fetchJson<SiteSettings>("/site-settings/"),
+  createBookingRequest: (payload: BookingRequestPayload) =>
+    fetch(`${apiBaseUrl}/booking-requests/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }),
 };
