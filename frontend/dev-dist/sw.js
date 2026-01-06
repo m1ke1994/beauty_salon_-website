@@ -81,18 +81,24 @@ define(['./workbox-6e08a099'], (function (workbox) { 'use strict';
     "url": "registerSW.js",
     "revision": "3ca0b8505b4bec776b69afdba2768812"
   }, {
-    "url": "/offline.html",
-    "revision": "0.2ucbe47u34g"
+    "url": "/index.html",
+    "revision": "0.vfrm5temv3o"
   }], {});
   workbox.cleanupOutdatedCaches();
-  workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("/offline.html"), {
+  workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("/index.html"), {
     allowlist: [/^\/$/]
   }));
   workbox.registerRoute(({
     request
   }) => request.destination === "document", new workbox.NetworkFirst({
     "cacheName": "html-cache",
-    plugins: []
+    "networkTimeoutSeconds": 3,
+    plugins: [{
+      handlerDidError: async () => {
+        const cached = await caches.match("/offline.html");
+        return cached || Response.error();
+      }
+    }]
   }), 'GET');
   workbox.registerRoute(({
     request

@@ -4,6 +4,25 @@
 
 **URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
 
+## Запуск через Docker
+
+```sh
+docker compose -f docker-compose.full.yml up -d --build
+```
+
+Логи:
+
+```sh
+docker compose -f docker-compose.full.yml logs -f frontend
+docker compose -f docker-compose.full.yml logs -f backend
+```
+
+Очистка контейнеров и volumes:
+
+```sh
+docker compose -f docker-compose.full.yml down -v
+```
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
