@@ -86,7 +86,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = "ru"
-LANGUAGES = [("ru", "???????")]
+LANGUAGES = [("ru", "Русский")]
 TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True
@@ -106,6 +106,6 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Belleza API",
-    "DESCRIPTION": "API ??? ???????? ????? ?????? ???????",
+    "DESCRIPTION": "API для управления контентом салона красоты",
     "VERSION": "1.0.0",
 }

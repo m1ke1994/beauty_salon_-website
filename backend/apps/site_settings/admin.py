@@ -5,9 +5,9 @@ from .models import SiteSettings
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     fieldsets = (
-        ("????????", {"fields": ("site_name", "phone", "phone_display")}),
+        ("Основное", {"fields": ("site_name", "phone", "phone_display")}),
         (
-            "????????",
+            "Контакты",
             {
                 "fields": (
                     "address",
@@ -21,7 +21,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "?????? ? ?????????",
+            "Навигация и ссылки",
             {
                 "fields": (
                     "navigation_links",
@@ -31,7 +31,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "?????",
+            "Карта",
             {
                 "fields": (
                     "map_place_url",
@@ -40,8 +40,8 @@ class SiteSettingsAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("?????", {"fields": ("footer_text",)}),
-        ("?????????????", {"fields": ("extra",)}),
+        ("Футер", {"fields": ("footer_text",)}),
+        ("Дополнительно", {"fields": ("extra",)}),
     )
 
     def has_add_permission(self, request):

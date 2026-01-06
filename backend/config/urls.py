@@ -3,9 +3,9 @@ from django.http import HttpResponse
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
-admin.site.site_header = "?????-?????? Belleza"
-admin.site.site_title = "Belleza ? ?????????? ?????????"
-admin.site.index_title = "??????? ????? ? ?????????"
+admin.site.site_header = "Админ-панель Belleza"
+admin.site.site_title = "Belleza — панель администратора"
+admin.site.index_title = "Управление сайтом и контентом"
 
 urlpatterns = [
     path("", lambda request: HttpResponse("Backend is running.")),

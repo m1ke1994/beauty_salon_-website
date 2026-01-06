@@ -19,7 +19,7 @@ def _import_initial_content(sender, **kwargs):
 class ContentConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "apps.content"
-    verbose_name = "??????? ?????"
+    verbose_name = "Контент сайта"
 
     def ready(self):
         post_migrate.connect(_import_initial_content, sender=self)
