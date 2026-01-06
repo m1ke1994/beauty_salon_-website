@@ -63,7 +63,7 @@ export function StepsSection() {
               >
                 <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-card shadow-card mb-6 z-10">
                   <step.icon className="h-8 w-8 text-gold" />
-                  <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gold text-white text-sm font-semibold flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gold text-graphite text-sm font-semibold flex items-center justify-center">
                     {step.number}
                   </span>
                 </div>

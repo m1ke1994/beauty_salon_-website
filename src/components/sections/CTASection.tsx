@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 
 export function CTASection() {
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-graphite via-graphite to-graphite-light" />
+    <section className="py-20 md:py-28 relative overflow-hidden bg-graphite text-white dark:bg-card dark:text-foreground">
+      <div className="absolute inset-0 bg-gradient-to-r from-graphite via-graphite to-graphite-light dark:from-card dark:via-card dark:to-muted" />
       <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_1px_1px,_white_1px,_transparent_0)] bg-[length:40px_40px]" />
 
       <div className="absolute top-10 left-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl animate-float-slow" />
@@ -25,12 +25,12 @@ export function CTASection() {
             <span className="text-sm font-medium">Скидка 15% на первый визит</span>
           </div>
 
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-white mb-6">
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-white dark:text-foreground mb-6">
             Готовы к идеальному{" "}
             <span className="text-gold">образу</span>?
           </h2>
 
-          <p className="text-white/70 text-lg md:text-xl mb-10 max-w-2xl mx-auto">
+          <p className="text-white/70 text-lg md:text-xl mb-10 max-w-2xl mx-auto dark:text-muted-foreground">
             Запишитесь онлайн или позвоните нам — мы подберем лучшее время и
             мастера под ваш запрос.
           </p>
@@ -46,7 +46,7 @@ export function CTASection() {
               <Button
                 variant="outline"
                 size="xl"
-                className="border-white/30 text-white hover:bg-white hover:text-graphite"
+                className="border-white/30 text-white hover:bg-white hover:text-graphite dark:border-border dark:text-foreground dark:hover:bg-accent"
               >
                 Позвонить нам
               </Button>

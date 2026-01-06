@@ -26,7 +26,7 @@ const features = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="section-padding bg-cream-dark/50 scroll-mt-header">
+    <section id="about" className="section-padding bg-muted/40 scroll-mt-header">
       <div className="container-narrow">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div

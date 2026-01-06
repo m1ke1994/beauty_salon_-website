@@ -20,7 +20,7 @@ export const PwaUpdatePrompt = () => {
         <button
           type="button"
           onClick={() => updateServiceWorker(true)}
-          className="inline-flex items-center justify-center rounded-md bg-gold px-4 py-2 text-white text-sm font-medium hover:bg-gold-dark transition-colors"
+          className="inline-flex items-center justify-center rounded-md bg-gold px-4 py-2 text-graphite text-sm font-medium hover:bg-gold-dark transition-colors"
         >
           Обновить
         </button>

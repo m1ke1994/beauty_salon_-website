@@ -60,7 +60,7 @@ const itemVariants = {
 
 export function ServicesSection() {
   return (
-    <section id="services" className="section-padding bg-cream-dark/50 scroll-mt-header">
+    <section id="services" className="section-padding bg-muted/40 scroll-mt-header">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -100,7 +100,7 @@ export function ServicesSection() {
               }`}
             >
               <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mb-6 group-hover:bg-gold group-hover:scale-110 transition-all duration-300">
-                <service.icon className="h-7 w-7 text-gold group-hover:text-white transition-colors" />
+                <service.icon className="h-7 w-7 text-gold group-hover:text-graphite transition-colors" />
               </div>
 
               <h3 className="font-serif text-2xl font-medium mb-3">

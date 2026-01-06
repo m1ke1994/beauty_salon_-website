@@ -96,7 +96,7 @@ const Booking = () => {
   }, [location.hash]);
 
   return (
-    <div className="min-h-screen bg-cream-dark/30">
+    <div className="min-h-screen bg-muted/40">
       <Header />
       <main className="pt-28 pb-20">
         <div className="container-narrow">
@@ -245,7 +245,7 @@ const Booking = () => {
                               onClick={() => setValue("time", time)}
                               className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
                                 selectedTime === time
-                                  ? "bg-gold text-white shadow-gold"
+                                  ? "bg-gold text-graphite shadow-gold"
                                   : "bg-muted hover:bg-accent"
                               }`}
                             >

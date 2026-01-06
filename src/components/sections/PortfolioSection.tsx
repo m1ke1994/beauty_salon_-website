@@ -72,7 +72,7 @@ export function PortfolioSection() {
   };
 
   return (
-    <section id="portfolio" className="section-padding bg-cream-dark/50 scroll-mt-header">
+    <section id="portfolio" className="section-padding bg-muted/40 scroll-mt-header">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -106,7 +106,7 @@ export function PortfolioSection() {
               onClick={() => setActiveCategory(category)}
               className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeCategory === category
-                  ? "bg-gold text-white shadow-gold"
+                  ? "bg-gold text-graphite shadow-gold"
                   : "bg-card text-muted-foreground hover:bg-accent"
               }`}
             >

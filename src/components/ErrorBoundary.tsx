@@ -32,7 +32,7 @@ export class ErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-cream flex items-center justify-center px-6">
+        <div className="min-h-screen bg-background flex items-center justify-center px-6">
           <div className="max-w-md text-center bg-card rounded-2xl p-8 shadow-card">
             <h1 className="font-serif text-3xl font-semibold mb-3">
               Что-то пошло не так
@@ -44,7 +44,7 @@ export class ErrorBoundary extends Component<
             <button
               type="button"
               onClick={this.handleReload}
-              className="inline-flex items-center justify-center rounded-md bg-gold px-6 py-3 text-white font-medium hover:bg-gold-dark transition-colors"
+              className="inline-flex items-center justify-center rounded-md bg-gold px-6 py-3 text-graphite font-medium hover:bg-gold-dark transition-colors"
             >
               Обновить страницу
             </button>
