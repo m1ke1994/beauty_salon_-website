@@ -8,10 +8,13 @@ const socialLinks = [
 ];
 
 const quickLinks = [
-  { href: "#services", label: "Услуги" },
-  { href: "#prices", label: "Цены" },
-  { href: "#portfolio", label: "Портфолио" },
-  { href: "/booking", label: "Записаться онлайн" },
+  { href: "/#services", label: "Услуги" },
+  { href: "/#prices", label: "Цены" },
+  { href: "/#portfolio", label: "Портфолио" },
+  { href: "/#reviews", label: "Отзывы" },
+  { href: "/#about", label: "О нас" },
+  { href: "/#contacts", label: "Контакты" },
+  { href: "/booking#booking", label: "Записаться онлайн" },
 ];
 
 export function Footer() {
@@ -105,7 +108,7 @@ export function Footer() {
               Выберите удобное время и получите первоклассный сервис.
             </p>
             <Link
-              to="/booking"
+              to="/booking#booking"
               className="inline-flex items-center justify-center h-12 px-6 rounded-md bg-gold text-white font-medium hover:bg-gold-dark transition-colors duration-300"
             >
               Записаться онлайн

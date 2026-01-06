@@ -72,7 +72,7 @@ export function PortfolioSection() {
   };
 
   return (
-    <section id="portfolio" className="section-padding bg-cream-dark/50">
+    <section id="portfolio" className="section-padding bg-cream-dark/50 scroll-mt-header">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -131,6 +131,8 @@ export function PortfolioSection() {
                 <img
                   src={item.image}
                   alt={item.title}
+                  width={600}
+                  height={600}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
@@ -161,6 +163,7 @@ export function PortfolioSection() {
               <button
                 onClick={closeLightbox}
                 className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors"
+                aria-label="Закрыть"
               >
                 <X className="h-8 w-8" />
               </button>
@@ -171,6 +174,7 @@ export function PortfolioSection() {
                   goToPrevious();
                 }}
                 className="absolute left-4 md:left-8 text-white/70 hover:text-white transition-colors"
+                aria-label="Предыдущее фото"
               >
                 <ChevronLeft className="h-10 w-10" />
               </button>
@@ -182,6 +186,8 @@ export function PortfolioSection() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 src={filteredItems[lightboxIndex].image}
                 alt={filteredItems[lightboxIndex].title}
+                width={900}
+                height={900}
                 className="max-w-full max-h-[80vh] rounded-lg object-contain"
                 onClick={(event) => event.stopPropagation()}
               />
@@ -192,6 +198,7 @@ export function PortfolioSection() {
                   goToNext();
                 }}
                 className="absolute right-4 md:right-8 text-white/70 hover:text-white transition-colors"
+                aria-label="Следующее фото"
               >
                 <ChevronRight className="h-10 w-10" />
               </button>

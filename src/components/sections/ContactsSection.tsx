@@ -46,7 +46,7 @@ const socialLinks = [
 
 export function ContactsSection() {
   return (
-    <section id="contacts" className="section-padding">
+    <section id="contacts" className="section-padding scroll-mt-header">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

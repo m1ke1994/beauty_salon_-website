@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { scrollToSection } from "@/lib/scrollToSection";
 
 export function HeroSection() {
   return (
@@ -29,8 +30,8 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium leading-tight mb-6"
           >
-            Ритуалы ухода и{" "}
-            <span className="text-gradient-gold">безупречный стиль</span>
+            Искусство красоты{" "}
+            <span className="text-gradient-gold">в каждом штрихе</span>
           </motion.h1>
 
           <motion.p
@@ -49,13 +50,19 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Link to="/booking">
+            <Link to="/booking#booking">
               <Button variant="gold" size="xl" className="group animate-glow">
                 Записаться онлайн
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
-            <a href="#services">
+            <a
+              href="#services"
+              onClick={(event) => {
+                event.preventDefault();
+                scrollToSection("services");
+              }}
+            >
               <Button variant="outline" size="xl">
                 Смотреть услуги
               </Button>

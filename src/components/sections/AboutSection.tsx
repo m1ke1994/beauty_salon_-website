@@ -26,7 +26,7 @@ const features = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="section-padding bg-cream-dark/50">
+    <section id="about" className="section-padding bg-cream-dark/50 scroll-mt-header">
       <div className="container-narrow">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div
@@ -40,7 +40,10 @@ export function AboutSection() {
               <img
                 src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=1000&fit=crop"
                 alt="Interior of Belleza beauty studio"
+                width={800}
+                height={1000}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-graphite/30 to-transparent" />
             </div>

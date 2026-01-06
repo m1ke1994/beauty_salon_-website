@@ -60,7 +60,10 @@ export function ReviewsSection() {
   };
 
   useEffect(() => {
-    const timer = setInterval(goToNext, 6000);
+    const timer = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
@@ -80,7 +83,7 @@ export function ReviewsSection() {
   };
 
   return (
-    <section id="reviews" className="section-padding">
+    <section id="reviews" className="section-padding scroll-mt-header">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -120,7 +123,10 @@ export function ReviewsSection() {
                   <img
                     src={reviews[currentIndex].avatar}
                     alt={reviews[currentIndex].name}
+                    width={80}
+                    height={80}
                     className="w-20 h-20 rounded-full object-cover mx-auto mb-6 ring-4 ring-gold/20"
+                    loading="lazy"
                   />
 
                   <div className="flex justify-center gap-1 mb-4">

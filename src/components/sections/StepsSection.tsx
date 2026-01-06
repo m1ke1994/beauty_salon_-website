@@ -27,7 +27,7 @@ const steps = [
 
 export function StepsSection() {
   return (
-    <section className="section-padding">
+    <section id="steps" className="section-padding scroll-mt-header">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

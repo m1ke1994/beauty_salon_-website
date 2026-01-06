@@ -36,7 +36,7 @@ export function CTASection() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/booking">
+            <Link to="/booking#booking">
               <Button variant="gold" size="xl" className="group animate-glow">
                 Записаться сейчас
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />

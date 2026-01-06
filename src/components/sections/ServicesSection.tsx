@@ -60,7 +60,7 @@ const itemVariants = {
 
 export function ServicesSection() {
   return (
-    <section id="services" className="section-padding bg-cream-dark/50">
+    <section id="services" className="section-padding bg-cream-dark/50 scroll-mt-header">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

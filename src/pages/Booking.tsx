@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar, CheckCircle2, Clock, ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { scrollToSection } from "@/lib/scrollToSection";
 
 const services = [
   { value: "manicure", label: "Маникюр + покрытие гель‑лак" },
@@ -50,7 +51,7 @@ const bookingSchema = z.object({
   phone: z
     .string()
     .min(10, "Введите корректный номер телефона")
-    .regex(/^[\d\s\+\-\(\)]+$/, "Введите корректный номер телефона"),
+    .regex(/^[\d\s+()-]+$/, "Введите корректный номер телефона"),
   service: z.string().min(1, "Выберите услугу"),
   date: z.string().min(1, "Выберите дату"),
   time: z.string().min(1, "Выберите время"),
@@ -62,6 +63,7 @@ type BookingFormData = z.infer<typeof bookingSchema>;
 const Booking = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const location = useLocation();
 
   const {
     register,
@@ -84,6 +86,14 @@ const Booking = () => {
   };
 
   const today = new Date().toISOString().split("T")[0];
+
+  useEffect(() => {
+    if (location.hash === "#booking") {
+      requestAnimationFrame(() => {
+        scrollToSection("booking", { behavior: "auto" });
+      });
+    }
+  }, [location.hash]);
 
   return (
     <div className="min-h-screen bg-cream-dark/30">
@@ -141,8 +151,9 @@ const Booking = () => {
                 </div>
 
                 <form
+                  id="booking"
                   onSubmit={handleSubmit(onSubmit)}
-                  className="max-w-2xl mx-auto bg-card rounded-2xl p-6 md:p-10 shadow-card"
+                  className="max-w-2xl mx-auto bg-card rounded-2xl p-6 md:p-10 shadow-card scroll-mt-header"
                 >
                   <div className="space-y-6">
                     <div className="space-y-2">
