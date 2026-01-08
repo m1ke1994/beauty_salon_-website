@@ -123,10 +123,7 @@ export function ContactsSection() {
                 </Button>
               </a>
               <a href="https://wa.me/79001234567" target="_blank" rel="noopener noreferrer">
-                <Button variant="gold-outline" size="lg" className="gap-2">
-                  <MessageCircle className="h-4 w-4" />
-                  WhatsApp
-                </Button>
+               
               </a>
             </div>
           </Reveal>
